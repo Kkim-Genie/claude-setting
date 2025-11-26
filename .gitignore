@@ -1,0 +1,14 @@
+# 모든 파일 무시
+*
+
+# 원하는 폴더만 화이트리스트로 허용
+!commands/
+!commands/**
+!skills/
+!skills/**
+!agents/
+!agents/**
+
+# .gitignore 자체는 추적
+!.gitignore
+
