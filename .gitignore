@@ -9,6 +9,7 @@
 !agents/
 !agents/**
 
-# .gitignore 자체는 추적
+# .gitignore와 README는 추적
 !.gitignore
+!README.md
 
