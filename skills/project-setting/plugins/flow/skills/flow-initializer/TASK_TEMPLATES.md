@@ -299,3 +299,113 @@ ELSE IF task needs design decisions OR has uncertainties:
 - **Breakdown**: Single atomic step
 - **Design needed**: No
 - **→ Use**: Standalone Task (just create repo, no iterations)
+
+---
+
+## TDD Mode Action Items Format
+
+When PLAN.md has TDD Mode set to ENABLED or STRICT, action items should follow this TDD-specific format.
+
+### TDD Action Items Template
+
+```markdown
+#### Action Items (TDD Mode: ENABLED)
+
+##### Feature 1: [FEATURE_NAME]
+
+- [ ] 🔴 RED: Write failing test
+  - File: `tests/[TestFile].test.ts`
+  - Test: "[test case description]"
+  - Expected failure: "[expected error or assertion failure]"
+
+- [ ] 🟢 GREEN: Implement minimal code
+  - File: `src/[SourceFile].ts`
+  - Only implement what test requires
+
+- [ ] 🔵 REFACTOR: Clean up (optional)
+  - Keep tests green
+  - Extract constants if needed
+
+##### Feature 2: [FEATURE_NAME]
+
+- [ ] 🔴 RED: Write failing test
+  - Test: "[test case description]"
+
+- [ ] 🟢 GREEN: Implement [feature]
+
+- [ ] 🔵 REFACTOR: [refactoring notes]
+```
+
+### TDD vs Standard Action Items Comparison
+
+**Standard Format**:
+```markdown
+#### Action Items
+- [ ] Create RetryPolicy class
+- [ ] Implement backoff algorithm
+- [ ] Add configuration options
+- [ ] Integrate with StripeClient
+- [ ] Add tests
+```
+
+**TDD Format**:
+```markdown
+#### Action Items (TDD Mode: ENABLED)
+
+##### Feature 1: RetryPolicy.calculateDelay
+
+- [ ] 🔴 RED: Write failing test
+  - File: `tests/RetryPolicy.test.ts`
+  - Test: "should return base delay for first retry"
+  - Expected failure: "RetryPolicy is not defined"
+
+- [ ] 🟢 GREEN: Implement minimal code
+  - File: `src/RetryPolicy.ts`
+  - Only implement what test requires
+
+- [ ] 🔵 REFACTOR: Clean up (optional)
+  - Keep tests green
+  - Extract constants if needed
+
+##### Feature 2: RetryPolicy.shouldRetry
+
+- [ ] 🔴 RED: Write failing test
+  - Test: "should return false after max attempts"
+
+- [ ] 🟢 GREEN: Implement shouldRetry method
+
+- [ ] 🔵 REFACTOR: Consolidate retry logic
+```
+
+### TDD Status Markers
+
+| Marker | Phase | Meaning |
+|--------|-------|---------|
+| 🔴 | RED | Writing/running failing test |
+| 🟢 | GREEN | Implementing minimal code to pass |
+| 🔵 | REFACTOR | Cleaning up while keeping tests green |
+
+### Iteration Status with TDD Phase
+
+When an iteration is in TDD mode, include the current TDD phase in the status:
+
+```markdown
+### 🚧 Iteration 2: Error Handling
+
+**Status**: 🚧 IN PROGRESS
+**TDD Phase**: 🔴 RED (writing test for retry logic)
+```
+
+### When to Use TDD Format
+
+```
+IF PLAN.md "TDD Mode" = STRICT:
+  → ALWAYS use TDD format for all implementation action items
+
+IF PLAN.md "TDD Mode" = RECOMMENDED:
+  → Use TDD format for business logic
+  → Standard format acceptable for simple utilities
+
+IF PLAN.md "TDD Mode" = DISABLED:
+  → Use standard action items format
+```

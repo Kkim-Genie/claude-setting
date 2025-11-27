@@ -79,6 +79,24 @@ Examples:
 ### Approach
 [OVERALL_TESTING_PHILOSOPHY]
 
+### TDD Mode
+**Status**: [DISABLED | RECOMMENDED | STRICT]
+
+**Enforcement Level**:
+- **STRICT**: All implementation must follow TDD. Violation = BLOCK.
+- **RECOMMENDED**: TDD encouraged. Violation = WARNING.
+- **DISABLED**: TDD not enforced. Standard testing applies.
+
+**TDD Rules** (when ENABLED or STRICT):
+- No production code without failing test first
+- Red-Green-Refactor cycle mandatory
+- Delete and restart if code written before test
+
+**Exceptions** (require human approval):
+- Throwaway prototypes
+- Generated code (migrations, scaffolding)
+- Configuration files
+
 ### Test Types
 - **Unit Tests**: [WHAT_TO_UNIT_TEST]
 - **Integration Tests**: [WHAT_TO_INTEGRATION_TEST]
@@ -214,7 +232,35 @@ Enable real-time communication between users through a web-based chat interface.
 
 ## Testing Strategy
 
-[TBD - Will be defined in Phase 1]
+### Approach
+Test-driven development for business logic, integration tests for API endpoints.
+
+### TDD Mode
+**Status**: RECOMMENDED
+
+**Enforcement Level**:
+- **STRICT**: All implementation must follow TDD. Violation = BLOCK.
+- **RECOMMENDED**: TDD encouraged. Violation = WARNING. ← Selected
+- **DISABLED**: TDD not enforced. Standard testing applies.
+
+**TDD Rules** (when ENABLED or STRICT):
+- No production code without failing test first
+- Red-Green-Refactor cycle mandatory
+- Delete and restart if code written before test
+
+**Exceptions** (require human approval):
+- Throwaway prototypes
+- Generated code (migrations, scaffolding)
+- Configuration files
+
+### Test Types
+- **Unit Tests**: Business logic, utility functions
+- **Integration Tests**: API endpoints, WebSocket handlers
+- **E2E Tests**: [TBD - if needed for V1]
+
+### Coverage Goals
+- Minimum 80% code coverage for business logic
+- All API endpoints must have integration tests
 
 ---
 

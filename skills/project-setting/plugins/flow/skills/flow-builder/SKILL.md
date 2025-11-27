@@ -69,6 +69,35 @@ IF iteration status = 🎨 READY or ⏳ PENDING:
     SUGGEST: "Use `/flow-implement-start` to begin implementation"
 ```
 
+### Check 4: TDD Gate (if TDD Mode enabled)
+
+```
+IF PLAN.md "TDD Mode" = ENABLED or STRICT:
+
+    FOR EACH action item in current iteration:
+
+        IF action item is implementation (not research/docs):
+
+            1. VERIFY test file exists OR marked as "test to write"
+            2. IF no test planned:
+                ❌ BLOCK: "TDD Mode requires test for this action item"
+                SUGGEST: "Add corresponding test to action items"
+
+            3. DURING implementation:
+                a. Write test first (🔴 RED)
+                b. Verify test fails for expected reason
+                c. Write minimal code (🟢 GREEN)
+                d. Verify test passes
+                e. Refactor if needed (🔵 REFACTOR)
+
+            4. IF code written before test:
+                ⚠️ WARNING (RECOMMENDED mode): "Consider deleting and restarting with TDD"
+                ❌ BLOCK (STRICT mode): "Delete code, start with failing test"
+
+ELSE:
+    ✅ PASS gate (TDD not enabled)
+```
+
 ## Implementation Workflow
 
 ### Step 1: Start Implementation
@@ -675,3 +704,101 @@ Before marking complete, verify ALL criteria met:
 If ALL checked → Use `/flow-implement-complete`
 
 If ANY unchecked → Continue implementation
+
+---
+
+## TDD Integration
+
+### When TDD Mode is Enabled
+
+IF PLAN.md specifies TDD Mode (ENABLED or STRICT):
+
+1. **Before Implementation**:
+   - Verify action items include test items (🔴 RED markers)
+   - Reference tdd-skill for TDD guidance
+   - Remind user of Red-Green-Refactor cycle
+
+2. **During Implementation**:
+   FOR EACH implementation action item:
+
+   a. 🔴 RED Phase:
+      - Write failing test
+      - Run test, verify failure
+      - Confirm failure reason is "feature missing" (not syntax error)
+
+   b. 🟢 GREEN Phase:
+      - Write minimal code to pass test
+      - Run test, verify pass
+      - No extra features beyond test requirements
+
+   c. 🔵 REFACTOR Phase:
+      - Improve code quality
+      - Keep tests green
+      - Extract duplication if any
+
+3. **Verification**:
+   - All tests passing
+   - Each test was seen failing before passing
+   - No untested production code
+
+### TDD Action Items Format
+
+When TDD Mode is enabled, action items should follow this format:
+
+```markdown
+#### Action Items (TDD Mode: ENABLED)
+
+##### Feature 1: [FEATURE_NAME]
+
+- [ ] 🔴 RED: Write failing test
+  - File: `tests/[TestFile].test.ts`
+  - Test: "[test description]"
+  - Expected failure: "[expected failure message]"
+
+- [ ] 🟢 GREEN: Implement minimal code
+  - File: `src/[SourceFile].ts`
+  - Only implement what test requires
+
+- [ ] 🔵 REFACTOR: Clean up (optional)
+  - Keep tests green
+  - Extract constants/helpers if needed
+```
+
+### TDD Status Markers
+
+| Marker | Phase | Meaning |
+|--------|-------|---------|
+| 🔴 | RED | Test written, watching it fail |
+| 🟢 | GREEN | Minimal code implemented, test passing |
+| 🔵 | REFACTOR | Cleaning up while keeping tests green |
+
+**Iteration status with TDD**:
+
+```markdown
+### 🚧 Iteration 2: Error Handling
+
+**Status**: 🚧 IN PROGRESS
+**TDD Phase**: 🔴 RED (writing test for retry logic)
+```
+
+### Enforcement Levels
+
+| Level | Behavior |
+|-------|----------|
+| **STRICT** | ❌ BLOCK if code written before test. Must delete and restart. |
+| **RECOMMENDED** | ⚠️ WARNING if code written before test. Suggest TDD restart. |
+| **DISABLED** | TDD not enforced. Standard implementation flow. |
+
+### TDD Exceptions (Require Human Approval)
+
+These scenarios may skip TDD with user confirmation:
+- Throwaway prototypes (mark as prototype)
+- Generated code (migrations, scaffolding)
+- Configuration files
+- Third-party integrations with no testable logic
+
+### Reference
+
+For detailed TDD methodology and patterns, see:
+- `tdd` skill (invoke for TDD-specific guidance)
+- Project PLAN.md Testing Strategy section
