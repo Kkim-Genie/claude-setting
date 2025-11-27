@@ -11,6 +11,7 @@
 
 # 민감한 파일 제외
 vault-path.txt
+.DS_Store
 
 # .gitignore와 README는 추적
 !.gitignore
