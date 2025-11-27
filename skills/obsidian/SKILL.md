@@ -9,7 +9,39 @@ Obsidian vault 파일 관리를 위한 스킬.
 
 ## Vault 경로
 
-`.vault-path` 파일에서 vault 경로를 읽는다.
+### 경로 파일 위치
+`~/.claude/skills/obsidian/vault-path.txt` 파일에서 vault 경로를 읽는다.
+
+### 초기 설정 (파일이 없을 때)
+
+**스킬 실행 시 `vault-path.txt` 파일이 없으면 반드시 다음 절차를 따른다:**
+
+1. **시스템에서 Obsidian vault 후보 검색**
+   ```bash
+   # .obsidian 폴더가 있는 디렉토리 = Obsidian vault
+   find ~ -name ".obsidian" -type d 2>/dev/null | head -5 | sed 's/\/.obsidian$//'
+   ```
+   - `.obsidian` 폴더가 있는 곳이 실제 vault
+   - 검색 결과가 없으면 "Obsidian" 이름이 포함된 폴더 검색
+
+2. **AskUserQuestion으로 검색 결과 제안**
+   - 검색된 경로들을 옵션으로 제시
+   - 사용자가 "기타"로 직접 입력도 가능
+   ```
+   질문: "Obsidian vault 경로를 선택해주세요"
+   옵션: [검색된 경로들을 동적으로 추가]
+   ```
+
+3. **사용자 응답 후 파일 생성**
+   - 선택된 경로를 `vault-path.txt` 파일에 저장
+   - `~`로 시작하는 형태로 저장 (홈 디렉토리 치환)
+
+### 경로 읽기
+
+```bash
+cat ~/.claude/skills/obsidian/vault-path.txt
+# 예: ~/Documents/Obsidian
+```
 
 ## Git 규칙
 

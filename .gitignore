@@ -9,6 +9,9 @@
 !agents/
 !agents/**
 
+# 민감한 파일 제외
+vault-path.txt
+
 # .gitignore와 README는 추적
 !.gitignore
 !README.md
